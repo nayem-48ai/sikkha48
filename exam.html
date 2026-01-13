@@ -1,3 +1,4 @@
+<!-- exam.html - (পূর্বের কোড থেকে কোনো পরিবর্তন নেই) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,15 +12,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-info">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.html">Sikkha48 Exam</a>
+            <a class="navbar-brand" href="index.html">Sikkha48 Exam</a> <!-- Changed to index.html -->
             <button class="btn btn-outline-light" id="logout-button">Logout</button>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div id="alert-container"></div> <!-- Alerts will be displayed here -->
+        <div id="alert-container"></div> 
 
-        <!-- Loading Spinner -->
         <div id="loading-spinner" class="loading-spinner">
             <div class="spinner-border text-info" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -30,7 +30,6 @@
         <hr>
 
         <div id="exam-container" class="mt-4">
-            <!-- Questions will be loaded here by exam.js -->
             <p class="text-center">Please select an exam from the dashboard.</p>
         </div>
     </div>
@@ -39,7 +38,7 @@
     <script type="module" src="js/firebase-config.js"></script>
     <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/ui.js"></script>
-    <script type="module" src="js/auth.js"></script> <!-- Auth check for redirection -->
-    <script type="module" src="js/exam.js"></script> <!-- Exam specific logic -->
+    <script type="module" src="js/auth.js"></script> 
+    <script type="module" src="js/exam.js"></script> 
 </body>
 </html>

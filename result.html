@@ -1,3 +1,4 @@
+<!-- result.html - (পূর্বের কোড থেকে কোনো পরিবর্তন নেই) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,15 +12,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container-fluid">
-            <a class="navbar-brand" href="dashboard.html">Sikkha48 Results</a>
+            <a class="navbar-brand" href="index.html">Sikkha48 Results</a> <!-- Changed to index.html -->
             <button class="btn btn-outline-light" id="logout-button">Logout</button>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div id="alert-container"></div> <!-- Alerts will be displayed here -->
+        <div id="alert-container"></div> 
 
-        <!-- Loading Spinner -->
         <div id="loading-spinner" class="loading-spinner">
             <div class="spinner-border text-success" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -32,13 +32,12 @@
         <div class="card bg-light mb-4 shadow-sm">
             <div class="card-body text-center">
                 <h4 class="card-title">Your Score: <span id="score-display" class="text-primary">0/0</span></h4>
-                <a href="dashboard.html" class="btn btn-outline-primary mt-3">Back to Dashboard</a>
+                <a href="index.html" class="btn btn-outline-primary mt-3">Back to Dashboard</a> <!-- Changed to index.html -->
             </div>
         </div>
 
         <h2 class="mt-5 mb-3 text-center">Detailed Results</h2>
         <div id="results-container" class="mt-4">
-            <!-- Detailed results will be loaded here by exam.js -->
             <p class="text-center">No detailed results to show. Please take an exam first.</p>
         </div>
     </div>
@@ -47,7 +46,7 @@
     <script type="module" src="js/firebase-config.js"></script>
     <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/ui.js"></script>
-    <script type="module" src="js/auth.js"></script> <!-- Auth check for redirection -->
-    <script type="module" src="js/exam.js"></script> <!-- Result display logic -->
+    <script type="module" src="js/auth.js"></script> 
+    <script type="module" src="js/exam.js"></script> 
 </body>
 </html>
