@@ -75,10 +75,28 @@
     color: #495057;
 }
 
-#submit-exam-btn {
-    padding: 0.8rem 2rem;
+/* Submit Button Styling */
+#sub-btn {
+    padding: 0.8rem 3rem;/
     font-size: 1.2rem;
     font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.4);
+    transition: all 0.3s ease;
+}
+
+#sub-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(25, 135, 84, 0.6);
+}
+
+/* মোবাইলের জন্য স্পেসিং ঠিক রাখা */
+@media (max-width: 768px) {
+    #sub-btn {
+        width: 100%;
+        margin-bottom: 4rem;
+    }
 }
 
 /* Result Page Styles */

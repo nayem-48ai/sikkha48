@@ -1,7 +1,7 @@
 /* css/admin.css */
 
 .navbar-dark.bg-dark {
-    background-color: #2c3e50 !important; /* Specific dark color for admin nav */
+    background-color: #2c3e50 !important;
 }
 
 .admin-dashboard h1 {
@@ -21,11 +21,14 @@
     border-bottom: none;
 }
 
-/* User Management Table */
+/* User Management Table Styling - FIXED SCROLLING */
 .table-responsive {
-    border-radius: 0.5rem;
-    overflow: hidden;
+    display: block;
+    width: 100%;
+    overflow-x: auto; /* এই লাইনটি হরাইজন্টাল স্ক্রল চালু করবে */
+    -webkit-overflow-scrolling: touch; /* মোবাইলে স্মুথ স্ক্রলিং এর জন্য */
     border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
 }
 
 .table-hover tbody tr:hover {
@@ -38,11 +41,13 @@
     font-weight: 600;
     border-bottom: 2px solid #bdc3c7;
     padding: 0.75rem 1rem;
+    white-space: nowrap; /* হেডার যেন ভেঙে নিচে না নামে */
 }
 
 .table tbody td {
     vertical-align: middle;
     padding: 0.75rem 1rem;
+    white-space: nowrap; /* কন্টেন্ট এক লাইনে রাখবে, ফলে টেবিল চওড়া হবে এবং স্ক্রলবার আসবে */
 }
 
 .badge {
@@ -130,13 +135,13 @@
         padding: 0.3rem 0.6rem;
         font-size: 0.8rem;
     }
-    #add-question-form h5 {
-        font-size: 1.1rem;
+    /* ছোট স্ক্রিনে কার্ডের ভেতরের কন্টেন্ট যেন ভেঙে নিচে নামে */
+    #question-papers-list .card-body {
+        flex-direction: column; 
+        align-items: flex-start;
+        gap: 10px;
     }
-    #question-json-input {
-        font-size: 0.85rem;
-    }
-    #question-papers-list .card-title {
-        font-size: 1rem;
+    #question-papers-list .delete-paper-btn {
+        width: 100%; /* ডিলিট বাটন পুরো চওড়া হবে মোবাইলে */
     }
 }
