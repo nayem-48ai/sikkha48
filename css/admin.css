@@ -1,0 +1,142 @@
+/* css/admin.css */
+
+.navbar-dark.bg-dark {
+    background-color: #2c3e50 !important; /* Specific dark color for admin nav */
+}
+
+.admin-dashboard h1 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.card.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.card-header.bg-secondary {
+    background-color: #7f8c8d !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 1.2rem;
+    border-bottom: none;
+}
+
+/* User Management Table */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.table thead th {
+    background-color: #ecf0f1;
+    color: #34495e;
+    font-weight: 600;
+    border-bottom: 2px solid #bdc3c7;
+    padding: 0.75rem 1rem;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    padding: 0.75rem 1rem;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+    font-size: 0.85em;
+    font-weight: 600;
+    border-radius: 0.35rem;
+}
+
+.toggle-approve-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+}
+
+/* Question Paper Management Form */
+#add-question-form {
+    background-color: #fdfdfd;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+#add-question-form h5 {
+    color: #34495e;
+    font-size: 1.3rem;
+}
+
+#question-json-input {
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.9rem;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+}
+
+#add-question-form .btn-primary {
+    margin-top: 1rem;
+}
+
+/* Existing Question Papers List */
+#question-papers-list .card {
+    border: 1px solid #e0e0e0;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+}
+
+#question-papers-list .card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+}
+
+#question-papers-list .card-title {
+    font-size: 1.15rem;
+    margin-bottom: 0.25rem;
+    color: #34495e;
+}
+
+#question-papers-list .card-text {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+}
+
+.delete-paper-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-header.bg-secondary {
+        font-size: 1rem;
+        padding: 0.8rem 1rem;
+    }
+    .table thead th, .table tbody td {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    .toggle-approve-btn, .delete-paper-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    #add-question-form h5 {
+        font-size: 1.1rem;
+    }
+    #question-json-input {
+        font-size: 0.85rem;
+    }
+    #question-papers-list .card-title {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,151 @@
+/* css/exam.css */
+
+/* Dashboard & General Exam Styling */
+.navbar-dark.bg-primary {
+    background-color: #3498db !important; /* Specific color for dashboard nav */
+}
+
+.navbar-dark.bg-info {
+    background-color: #1abc9c !important; /* Specific color for exam nav */
+}
+
+.navbar-dark.bg-success {
+    background-color: #2ecc71 !important; /* Specific color for result nav */
+}
+
+.exam-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.exam-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+#exam-list .card {
+    height: 100%; /* Ensure cards are same height in a row */
+}
+
+#exam-list .card-title {
+    color: #2c3e50;
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+}
+
+#exam-list .card-text {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+/* Exam Interface Styles */
+#exam-container .card {
+    border: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+}
+
+#exam-container .card-body {
+    padding: 1.5rem;
+}
+
+#exam-container .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    color: #34495e;
+}
+
+.options-container .form-check {
+    margin-bottom: 0.75rem;
+    padding-left: 2.25rem; /* For radio button alignment */
+}
+
+.options-container .form-check-input[type="radio"] {
+    margin-top: 0.3rem;
+    margin-left: -1.75rem;
+    border-color: #adb5bd;
+}
+
+.options-container .form-check-input[type="radio"]:checked {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.options-container .form-check-label {
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #495057;
+}
+
+#submit-exam-btn {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Result Page Styles */
+#results-container .card {
+    border-left: 5px solid; /* For correct/incorrect indication */
+    transition: box-shadow 0.3s ease;
+}
+
+#results-container .card-body {
+    padding: 1.25rem;
+}
+
+#results-container .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#results-container .card.border-success {
+    border-color: #2ecc71;
+}
+
+#results-container .card.border-danger {
+    border-color: #e74c3c;
+}
+
+#results-container .badge {
+    padding: 0.4em 0.7em;
+    font-size: 0.8em;
+    font-weight: 600;
+    border-radius: 0.3rem;
+}
+
+#results-container .card-text strong {
+    color: #555;
+}
+
+#score-display {
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: block;
+    margin-top: 0.5rem;
+}
+
+#exam-subject-display {
+    font-style: italic;
+    color: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #exam-list .card-title {
+        font-size: 1.1rem;
+    }
+    #exam-container .card-title {
+        font-size: 1.1rem;
+    }
+    .options-container .form-check-label {
+        font-size: 1rem;
+    }
+    #submit-exam-btn {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+    }
+    #score-display {
+        font-size: 2rem;
+    }
+}

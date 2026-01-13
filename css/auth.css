@@ -1,0 +1,85 @@
+/* css/auth.css */
+
+.auth-container {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* Lively gradient background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.auth-container .card {
+    background-color: #ffffff;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden; /* Ensures content stays within rounded corners */
+    max-width: 550px; /* Slightly wider for better forms */
+    width: 100%;
+}
+
+.auth-container .card-body {
+    padding: 2.5rem;
+}
+
+.auth-container .card-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #34495e;
+    margin-bottom: 2rem;
+}
+
+.auth-container .nav-pills .nav-link {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    color: #495057;
+    background-color: #e9ecef;
+    margin: 0 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.auth-container .nav-pills .nav-link.active {
+    background-color: #3498db;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+}
+
+.auth-container .form-label {
+    font-weight: 500;
+    color: #555;
+}
+
+.auth-container .form-control {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+.auth-container .form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+.auth-container .btn {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .auth-container .card-body {
+        padding: 1.5rem;
+    }
+    .auth-container .card-title {
+        font-size: 1.8rem;
+    }
+    .auth-container .nav-pills .nav-link {
+        padding: 0.5rem 1rem;
+        margin: 0 0.25rem;
+        font-size: 0.9rem;
+    }
+}

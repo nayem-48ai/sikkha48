@@ -1,0 +1,161 @@
+/* css/style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #34495e;
+    font-weight: 600;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    background-color: #ecf0f1;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+    padding: 1rem 1.5rem;
+}
+
+.card-title {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+.btn-success {
+    background-color: #2ecc71;
+    border-color: #2ecc71;
+}
+
+.btn-success:hover {
+    background-color: #27ae60;
+    border-color: #27ae60;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+.btn-outline-light {
+    color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.btn-outline-light:hover {
+    background-color: #f8f9fa;
+    color: #343a40;
+}
+
+/* Navigation Bar */
+.navbar {
+    margin-bottom: 2rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.75rem;
+}
+
+/* Alerts */
+#alert-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1100;
+    width: 100%;
+    max-width: 400px;
+}
+
+.alert {
+    animation: fadeInOut 5s forwards; /* 5 সেকেন্ড পর ফেড আউট হবে */
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: none; /* Hidden by default, shown by JS when needed */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    justify-content: center; /* Ensures centering when JS sets display to flex */
+    align-items: center;
+    z-index: 1050;
+}
+
+/* যখন JavaScript দ্বারা স্পিনার দেখানো হবে, তখন display: flex সেট করা হবে */
+.loading-spinner.active { 
+    display: flex;
+}
+
+.loading-spinner .spinner-border {
+    width: 4rem;
+    height: 4rem;
+    border-width: 0.4em;
+}
+
+/* Utilities */
+.text-center {
+    text-align: center;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
