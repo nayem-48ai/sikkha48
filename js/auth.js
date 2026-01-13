@@ -15,77 +15,37 @@ import {
 import { showAlert, showSpinner, hideSpinner } from './ui.js';
 import { redirectTo } from './utils.js';
 
-// Authentication স্টেট পরিবর্তনের জন্য লিসেনার
-onAuthStateChanged(auth, async (user) => {
-  // নিশ্চিত করুন যে DOMContentLoaded এর আগে এই লজিকটি না চলে,
-  // অথবা অন্তত document.readyState == 'loading' না থাকলে
-  // এখানে window.location.pathname চেক করার আগে document.readyState চেক করার প্রয়োজন নেই।
-  // কারণ onAuthStateChanged অ্যাসিঙ্ক্রোনাস এবং সাধারণত DOM তৈরি হওয়ার পরেই এক্সিকিউট হয়।
+// ইউটিলিটি
+const isLoginPage = (path) => path.includes('/login.html') || path === '/' || path.endsWith('/');
 
-  const currentPath = window.location.pathname;
-
-  if (user) {
-    // ইউজার লগইন করা থাকলে
-    const userDocRef = doc(db, "users", user.uid);
-    try {
-        const userDocSnap = await getDoc(userDocRef);
-
-        if (userDocSnap.exists()) {
-            const userData = userDocSnap.data();
-            
-            // এডমিন ইউজারদের জন্য
-            if (userData.role === 'admin') {
-                if (!currentPath.includes('/admin.html')) {
-                    redirectTo('admin.html');
-                }
-            } 
-            // সাধারণ ইউজারদের জন্য
-            else { 
-                if (!userData.isApproved) {
-                    // অনুমোদিত না হলে, তাকে dashboard.html এ নিয়ে যাবে (যদি সে index.html এ না থাকে)
-                    // dashboard.html এ "অপেক্ষায় থাকুন" মেসেজ দেখানো হবে।
-                    if (!currentPath.includes('/dashboard.html') && !currentPath.includes('/index.html')) {
-                         redirectTo('dashboard.html');
-                    }
-                    // যদি সে dashboard.html এ থাকে, তাহলে সেখানে থাকবে।
-                    // যদি সে index.html এ থাকে, তাহলে সেখানেই থাকবে।
-                } else {
-                    // অনুমোদিত হলে dashboard.html এ রিডাইরেক্ট করবে
-                    if (!currentPath.includes('/dashboard.html') && 
-                        !currentPath.includes('/exam.html') && 
-                        !currentPath.includes('/result.html')) {
-                        redirectTo('dashboard.html');
+// অনলি লগইন পেজের জন্য অথ স্টেট লিসেনার
+// অন্য পেজগুলো (admin/exam) তাদের নিজস্ব লিসেনার ব্যবহার করবে
+if (isLoginPage(window.location.pathname)) {
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            // ইউজার যদি লগইন অবস্থায় লগইন পেজে আসে, তাকে ড্যাশবোর্ডে পাঠাও
+            const userDocRef = doc(db, "users", user.uid);
+            try {
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data();
+                    if (userData.role === 'admin') {
+                        redirectTo('admin.html');
+                    } else {
+                        // ইউজার approved হোক বা না হোক, ড্যাশবোর্ডে পাঠাও
+                        // ড্যাশবোর্ড (index.html) হ্যান্ডেল করবে সে পরীক্ষা দিতে পারবে কি না
+                        redirectTo('index.html');
                     }
                 }
-            }
-        } else {
-            // যদি user object থাকে কিন্তু Firestore এ ডকুমেন্ট না থাকে
-            // এটি নির্দেশ করে যে সাইনআপ প্রক্রিয়া সম্পন্ন হয়নি বা ডেটা হারিয়ে গেছে।
-            console.warn("User document not found for:", user.uid);
-            // যদি index.html এ না থাকে, তাহলে তাকে index.html এ ফেরত পাঠাও
-            if (!currentPath.includes('/index.html') && currentPath !== '/') {
-                showAlert("Your user profile is incomplete. Please sign up again or contact admin.", "danger");
-                await signOut(auth); // ইউজারকে লগআউট করিয়ে দাও
-                redirectTo('index.html');
+            } catch (error) {
+                console.error("Auth check error:", error);
+                // এরর হলে কিছু করার দরকার নেই, লগইন পেজেই থাকুক
             }
         }
-    } catch (error) {
-        // Firestore সংযোগ বা ডেটা আনতে ব্যর্থ হলে
-        console.error("Error fetching user data on auth state change:", error);
-        showAlert("Failed to load user profile or connect to database. Please check your internet and try again.", "danger");
-        await signOut(auth); // লগআউট করে লগইন পেজে ফেরত পাঠাও
-        redirectTo('index.html');
-    }
-  } else {
-    // ইউজার লগইন করা না থাকলে
-    // শুধুমাত্র যদি বর্তমান পেজ login/signup (index.html) না হয়, তাহলে রিডাইরেক্ট করবে
-    if (!currentPath.includes('/index.html') && currentPath !== '/') {
-      redirectTo('index.html');
-    }
-  }
-});
+    });
+}
 
-// নতুন ইউজার সাইন-আপ
+// সাইন আপ
 async function signUp(email, password, username) {
   showSpinner();
   try {
@@ -100,58 +60,64 @@ async function signUp(email, password, username) {
       createdAt: serverTimestamp() 
     });
 
-    showAlert("Sign up successful! Your account is awaiting admin approval.", "success");
-    // Sign up সফল হলে onAuthStateChanged নিজেই রিডাইরেক্ট হ্যান্ডেল করবে।
-    // এখানে এক্সপ্লিসিট রিডাইরেক্ট দরকার নেই।
+    showAlert("Sign up successful! Please wait for approval.", "success");
+    // রিডাইরেক্ট onAuthStateChanged করবে
     return user;
   } catch (error) {
-    console.error("Error signing up:", error);
-    showAlert("Sign up failed: " + error.message, "danger");
+    console.error("Sign up error:", error);
+    let msg = error.message;
+    if(error.code === 'auth/email-already-in-use') msg = "Email already in use.";
+    showAlert(msg, "danger");
     return null;
   } finally {
     hideSpinner();
   }
 }
 
-// ইউজার লগইন
+// সাইন ইন
 async function signIn(email, password) {
   showSpinner();
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    showAlert("Login successful!", "success");
-    // Login সফল হলে onAuthStateChanged নিজেই রিডাইরেক্ট হ্যান্ডেল করবে।
-    // এখানে এক্সপ্লিসিট রিডাইরেক্ট দরকার নেই।
-    return auth.currentUser;
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    // লগইন সফল, কিন্তু আমরা এখানে চেক করবো ইউজার approved কিনা
+    // approved না হলে আমরা তাকে আটকাবো না, বরং ড্যাশবোর্ডে পাঠাবো
+    // ড্যাশবোর্ড তাকে ব্লক করে মেসেজ দেখাবে। এতে UX ভালো হয়।
+    
+    return user;
   } catch (error) {
-    console.error("Error signing in:", error);
-    showAlert("Login failed: " + error.message, "danger");
+    console.error("Sign in error:", error);
+    let msg = "Login failed. Check email and password.";
+    if (error.code === 'auth/invalid-credential') msg = "Invalid Email or Password.";
+    if (error.code === 'auth/user-not-found') msg = "User not found.";
+    showAlert(msg, "danger");
     return null;
   } finally {
     hideSpinner();
   }
 }
 
-// ইউজার লগআউট
+// লগআউট
+// নোট: এটি রিডাইরেক্ট করবে না। যে পেজ থেকে কল হবে, সেই পেজের স্টেট চেঞ্জার রিডাইরেক্ট করবে।
 async function logout() {
   showSpinner();
   try {
     await signOut(auth);
-    showAlert("Logged out successfully!", "success");
-    redirectTo('index.html'); 
+    showAlert("Logged out successfully.", "info"); 
+    // কোনো redirectTo নেই এখানে। 
+    // admin.js বা exam.js এর onAuthStateChanged ডিটেক্ট করবে ইউজার নেই, তখন login.html এ পাঠাবে।
   } catch (error) {
-    console.error("Error logging out:", error);
-    showAlert("Logout failed: " + error.message, "danger");
+    console.error("Logout error:", error);
+    showAlert("Logout failed.", "danger");
   } finally {
     hideSpinner();
   }
 }
 
-// DOMContentLoaded ইভেন্টের উপর ভিত্তি করে ফর্ম লিসেনার যোগ করা
+// ইভেন্ট লিসেনার (শুধুমাত্র লগইন পেজের জন্য)
 document.addEventListener('DOMContentLoaded', () => {
-    const currentPath = window.location.pathname;
-
-    // Login/Signup page specific event listeners
-    if (currentPath.includes('/index.html') || currentPath === '/') {
+    if (isLoginPage(window.location.pathname)) {
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
         const loginTabBtn = document.getElementById('pills-login-tab');
@@ -172,22 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const email = signupForm['signup-email'].value;
                 const password = signupForm['signup-password'].value;
                 const user = await signUp(email, password, username);
-                if (user) {
-                    // Sign up সফল হলে, লগইন ট্যাবে ফিরে যাওয়ার লজিক
-                    // Bootstrap 5 এর জন্য
-                    if (loginTabBtn) {
-                        const loginTab = new bootstrap.Tab(loginTabBtn);
-                        loginTab.show(); 
-                    }
+                if (user && loginTabBtn) {
+                    const loginTab = new bootstrap.Tab(loginTabBtn);
+                    loginTab.show(); 
                 }
             });
         }
-    }
-
-    // Logout button (present on dashboard, admin, exam, result pages)
-    const logoutButton = document.getElementById('logout-button'); 
-    if (logoutButton) {
-        logoutButton.addEventListener('click', logout);
     }
 });
 
