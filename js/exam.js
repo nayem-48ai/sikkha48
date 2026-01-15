@@ -24,13 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // অথেন্টিকেশন চেক
     onAuthStateChanged(auth, async (user) => {
         if (!user) {
-            // ইউজার লগআউট হলে login.html এ যাবে
             redirectTo('login.html');
             return;
         }
 
         try {
-            // রাউটিং লজিক
             const path = window.location.pathname;
             if (path.includes('index.html')) {
                 await loadDashboard(user);
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // লগআউট বাটন
     const logoutButton = document.getElementById('logout-button');
     if (logoutButton) {
         logoutButton.onclick = async () => {
@@ -63,15 +60,49 @@ async function loadDashboard(user) {
         return;
     }
 
-    // যদি অ্যাপ্রুভড না হয়, মডাল বা ওয়ার্নিং দেখাও
+    // অ্যাকাউন্ট অ্যাপ্রুভড না হলে পেমেন্ট গেটওয়ে দেখাবে
     if (!userSnap.data().isApproved) {
         setElementHTML('exam-list', `
-            <div class="alert alert-warning text-center mt-5">
-                <h4>অ্যাকাউন্ট অনুমোদনের অপেক্ষায়</h4>
-                <p>দয়া করে <strong>@Tnayem48</strong> এর সাথে যোগাযোগ করুন।</p>
-                <p class="small text-muted">"Great things take time!"</p>
+            <div id="approval-notice-container" style="max-width: 500px; margin: 40px auto; padding: 0 15px;">
+                <div id="fade-alert" class="alert alert-warning text-center shadow-sm" 
+                     style="transition: all 0.8s ease; opacity: 1; border-radius: 15px; margin-bottom: 20px; overflow: hidden;">
+                    <h4 class="font-weight-bold">অ্যাকাউন্ট অনুমোদনের অপেক্ষায়</h4>
+                    <p class="mb-1">অ্যাক্টিভেশন ফি প্রদান করে নিচের ফরমটি পূরণ করুন।</p>
+                    <p class="small text-muted">"Great things take time!"</p>
+                </div>
+
+                <div id="payment-wrapper" style="transition: all 0.8s ease; margin-top: 0;">
+                    <iframe 
+                        src="payment.html" 
+                        style="width: 100%; height: 625px; border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" 
+                        scrolling="no">
+                    </iframe>
+                </div>
+
+                <div class="text-center mt-3">
+                    <p class="text-muted small">সহযোগিতার জন্য: <strong>@Tnayem48</strong></p>
+                </div>
             </div>
         `);
+
+        // ৫ সেকেন্ড পর অ্যালার্টটি সরিয়ে দেওয়ার ফাংশন
+        setTimeout(() => {
+            const alertBox = document.getElementById('fade-alert');
+            const wrapper = document.getElementById('payment-wrapper');
+            if (alertBox) {
+                alertBox.style.opacity = '0';
+                alertBox.style.maxHeight = '0';
+                alertBox.style.margin = '0';
+                alertBox.style.padding = '0';
+                alertBox.style.border = 'none';
+                
+                // পেমেন্ট বক্সটি যেন স্মুথলি ওপরে উঠে আসে
+                if(wrapper) {
+                    wrapper.style.marginTop = "10px";
+                }
+            }
+        }, 5000); // ৫০০০ মিলিসেকেন্ড = ৫ সেকেন্ড
+
         return;
     }
 
@@ -95,11 +126,13 @@ async function loadQuestionPapersList() {
             const data = doc.data();
             html += `
                 <div class="col">
-                    <div class="card h-100 shadow-sm">
+                    <div class="card h-100 shadow-sm border-0" style="border-radius: 15px;">
                         <div class="card-body">
-                            <h5 class="card-title">${data.subjectName}</h5>
-                            <p class="card-text">Questions: ${data.questions.length}</p>
-                            <button class="btn btn-primary start-btn" data-id="${doc.id}" data-name="${data.subjectName}">Start Exam</button>
+                            <h5 class="card-title font-weight-bold">${data.subjectName}</h5>
+                            <p class="card-text text-muted">Questions: ${data.questions.length}</p>
+                            <button class="btn btn-primary start-btn w-100 shadow-sm" 
+                                    style="border-radius: 10px;"
+                                    data-id="${doc.id}" data-name="${data.subjectName}">Start Exam</button>
                         </div>
                     </div>
                 </div>`;
@@ -148,21 +181,21 @@ function renderQuestions() {
         let opts = '';
         q.options.forEach((opt, oIdx) => {
             opts += `
-                <div class="form-check">
+                <div class="form-check mb-2">
                     <input class="form-check-input" type="radio" name="q-${idx}" id="q${idx}-o${oIdx}" value="${oIdx}">
                     <label class="form-check-label" for="q${idx}-o${oIdx}">${opt}</label>
                 </div>`;
         });
         container.innerHTML += `
-            <div class="card mb-4 shadow-sm">
+            <div class="card mb-4 shadow-sm border-0" style="border-radius: 15px;">
                 <div class="card-body">
-                    <h5>Q${idx+1}: ${q.question}</h5>
-                    <div class="opts">${opts}</div>
+                    <h5 class="font-weight-bold">Q${idx+1}: ${q.question}</h5>
+                    <div class="opts mt-3">${opts}</div>
                 </div>
             </div>`;
     });
 
-    container.innerHTML += '<div class="text-center mt-4"><button id="sub-btn" class="btn btn-success btn-lg">Submit</button></div>';
+    container.innerHTML += '<div class="text-center mt-4 mb-5"><button id="sub-btn" class="btn btn-success btn-lg px-5 shadow" style="border-radius: 12px;">Submit Exam</button></div>';
     
     container.querySelectorAll('input[type="radio"]').forEach(r => {
         r.addEventListener('change', (e) => {
@@ -215,13 +248,13 @@ async function displayResults(user) {
         const cls = res.isCorrect ? 'border-success' : 'border-danger';
         const badge = res.isCorrect ? 'bg-success' : 'bg-danger';
         html += `
-            <div class="card mb-3 ${cls}">
+            <div class="card mb-3 ${cls} border-2" style="border-radius: 15px;">
                 <div class="card-body">
                     <h5 class="card-title">Q${idx+1} <span class="badge ${badge}">${res.isCorrect?'Correct':'Incorrect'}</span></h5>
-                    <p><strong>Question:</strong> ${res.question}</p>
-                    <p><strong>Your Answer:</strong> ${res.selectedAnswer}</p>
-                    <p><strong>Correct Answer:</strong> ${res.correctAnswer}</p>
-                    ${!res.isCorrect && res.explanation ? `<p class="text-muted">Note: ${res.explanation}</p>` : ''}
+                    <p class="mb-1"><strong>Question:</strong> ${res.question}</p>
+                    <p class="mb-1"><strong>Your Answer:</strong> ${res.selectedAnswer}</p>
+                    <p class="mb-1"><strong>Correct Answer:</strong> <span class="text-success font-weight-bold">${res.correctAnswer}</span></p>
+                    ${!res.isCorrect && res.explanation ? `<div class="mt-2 p-2 bg-light rounded small text-muted"><strong>Explanation:</strong> ${res.explanation}</div>` : ''}
                 </div>
             </div>`;
     });
