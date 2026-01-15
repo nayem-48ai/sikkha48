@@ -66,7 +66,7 @@ async function loadDashboard(user) {
             <div id="approval-notice-container" style="max-width: 500px; margin: 40px auto; padding: 0 15px;">
                 <div id="fade-alert" class="alert alert-warning text-center shadow-sm" 
                      style="transition: all 0.8s ease; opacity: 1; border-radius: 15px; margin-bottom: 20px; overflow: hidden;">
-                    <h4 class="font-weight-bold">অ্যাকাউন্ট অনুমোদনের অপেক্ষায়</h4>
+                    <h4 class="font-weight-bold">অ্যাকাউন্ট (approval) অনুমোদনের অপেক্ষায়</h4>
                     <p class="mb-1">অ্যাক্টিভেশন ফি প্রদান করে নিচের ফরমটি পূরণ করুন।</p>
                     <p class="small text-muted">"Great things take time!"</p>
                 </div>
@@ -80,7 +80,7 @@ async function loadDashboard(user) {
                 </div>
 
                 <div class="text-center mt-3">
-                    <p class="text-muted small">সহযোগিতার জন্য: <strong>@Tnayem48</strong></p>
+                    <p class="text-muted small">সাহায্য/সহযোগিতার জন্য: <strong>@Tnayem48</strong></p>
                 </div>
             </div>
         `);
