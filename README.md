@@ -76,7 +76,8 @@ sikkha48/
 ১. রিপোজিটরি ক্লোন করুন
 
 ```Bash
-git clone https://github.com/your-username/sikkha48.git cd sikkha48```
+git clone https://github.com/your-username/sikkha48.git cd sikkha48
+```
 
 ২. Firebase প্রজেক্ট সেটআপ
 
@@ -93,7 +94,8 @@ Firestore Database তৈরি করুন এবং Production Mode সিল
 js/firebase-config.js ফাইলটি ওপেন করুন এবং আপনার firebaseConfig দিয়ে প্রতিস্থাপন করুন:
 
 ```JavaScript
-const firebaseConfig = { apiKey: "YOUR_API_KEY", authDomain: "YOUR_PROJECT_ID.firebaseapp.com", projectId: "YOUR_PROJECT_ID", storageBucket: "YOUR_PROJECT_ID.appspot.com", messagingSenderId: "YOUR_SENDER_ID", appId: "YOUR_APP_ID" };```
+const firebaseConfig = { apiKey: "YOUR_API_KEY", authDomain: "YOUR_PROJECT_ID.firebaseapp.com", projectId: "YOUR_PROJECT_ID", storageBucket: "YOUR_PROJECT_ID.appspot.com", messagingSenderId: "YOUR_SENDER_ID", appId: "YOUR_APP_ID" };
+```
 
 🗄️ ডেটাবেজ স্কিমা (Database Schema)
 
@@ -112,14 +114,16 @@ FieldTypeDescriptionsubjectNameStringপরীক্ষার বিষয়ের
 Firestore Database-এর Rules ট্যাবে গিয়ে নিচের রুলস সেট করুন:
 
 ```Firestore
-rules_version = '2'; service cloud.firestore { match /databases/{database}/documents { // ইউজাররা নিজের ডাটা দেখবে, এডমিন সব দেখবে match /users/{userId} { allow read, write: if request.auth != null && (request.auth.uid == userId || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'); } // অনুমোদিত ইউজাররা প্রশ্নপত্র পড়বে, এডমিন এডিট করবে match /questionPapers/{paperId} { allow read: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isApproved == true; allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'; } } }```
+rules_version = '2'; service cloud.firestore { match /databases/{database}/documents { // ইউজাররা নিজের ডাটা দেখবে, এডমিন সব দেখবে match /users/{userId} { allow read, write: if request.auth != null && (request.auth.uid == userId || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'); } // অনুমোদিত ইউজাররা প্রশ্নপত্র পড়বে, এডমিন এডিট করবে match /questionPapers/{paperId} { allow read: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isApproved == true; allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'; } } }
+```
 
 📝 প্রশ্ন আপলোড ফরম্যাট (JSON)
 
 এডমিন প্যানেলে প্রশ্ন আপলোড করার সময় নিচের JSON ফরম্যাটটি ব্যবহার করতে হবে:
 
 ```JSON
-{ "title": "General Knowledge", "questions": [ { "question": "বাংলাদেশের রাজধানীর নাম কী?", "options": ["চট্টগ্রাম", "খুলনা", "ঢাকা", "রাজশাহী"], "answer": 2, "explanation": "বাংলাদেশের রাজধানী ঢাকা।" }, { "question": "পদ্মা সেতুর দৈর্ঘ্য কত?", "options": ["৬.১৫ কি.মি.", "৫.১৫ কি.মি.", "৪.১৫ কি.মি.", "৭.১৫ কি.মি."], "answer": 0, "explanation": "পদ্মা সেতুর মূল দৈর্ঘ্য ৬.১৫ কিলোমিটার।" } ] }```
+{ "title": "General Knowledge", "questions": [ { "question": "বাংলাদেশের রাজধানীর নাম কী?", "options": ["চট্টগ্রাম", "খুলনা", "ঢাকা", "রাজশাহী"], "answer": 2, "explanation": "বাংলাদেশের রাজধানী ঢাকা।" }, { "question": "পদ্মা সেতুর দৈর্ঘ্য কত?", "options": ["৬.১৫ কি.মি.", "৫.১৫ কি.মি.", "৪.১৫ কি.মি.", "৭.১৫ কি.মি."], "answer": 0, "explanation": "পদ্মা সেতুর মূল দৈর্ঘ্য ৬.১৫ কিলোমিটার।" } ] }
+```
 
 `নোট: answer ফিল্ডে সঠিক উত্তরের ইনডেক্স (0 থেকে শুরু) দিতে হবে।`
 
@@ -130,24 +134,28 @@ Firebase Hosting এ লাইভ করার জন্য:
 Firebase CLI ইন্সটল করুন (যদি না থাকে):
 
 ```Bash
-npm install -g firebase-tools```
+npm install -g firebase-tools
+```
 
 লগইন করুন:
 
 ```Bash
-firebase login```
+firebase login
+```
 
 প্রজেক্ট ইনিশিয়ালাইজ করুন:
 
 ```Bash
-firebase init```
+firebase init
+```
 
 (Select Hosting -> Use existing project -> Select sikkha48 -> Public directory: . (dot) -> Single page app: No)
 
 ডিপ্লয় করুন:
 
 ```Bash
-firebase deploy```
+firebase deploy
+```
 
 👨‍💻 ডেভেলপার
 
