@@ -76,7 +76,7 @@ sikkha48/
 ১. রিপোজিটরি ক্লোন করুন
 
 ```Bash
-git clone https://github.com/your-username/sikkha48.git cd sikkha48
+git clone https://github.com/nayem-48ai/sikkha48.git cd sikkha48
 ```
 
 ২. Firebase প্রজেক্ট সেটআপ
