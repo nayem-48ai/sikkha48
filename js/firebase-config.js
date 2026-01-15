@@ -6,7 +6,9 @@ import { getAuth,
          createUserWithEmailAndPassword, 
          signInWithEmailAndPassword, 
          signOut, 
-         onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+         onAuthStateChanged,
+         sendPasswordResetEmail // নতুন যুক্ত করা হয়েছে
+       } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 import { getFirestore, 
          doc, 
          getDoc, 
@@ -17,7 +19,8 @@ import { getFirestore,
          getDocs, 
          updateDoc, 
          deleteDoc,
-         serverTimestamp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js"; // serverTimestamp ইমপোর্ট করা হয়েছে
+         serverTimestamp 
+       } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
 
 
@@ -47,6 +50,7 @@ export {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendPasswordResetEmail, // নতুন এক্সপোর্ট
   doc,
   getDoc,
   setDoc,
@@ -56,5 +60,5 @@ export {
   getDocs,
   updateDoc,
   deleteDoc,
-  serverTimestamp // serverTimestamp এক্সপোর্ট করা হয়েছে
+  serverTimestamp 
 };

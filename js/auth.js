@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged,
+  sendPasswordResetEmail, // ইমপোর্ট করা হয়েছে
   doc,
   getDoc,
   setDoc,
@@ -19,11 +20,9 @@ import { redirectTo } from './utils.js';
 const isLoginPage = (path) => path.includes('/login.html') || path === '/' || path.endsWith('/');
 
 // অনলি লগইন পেজের জন্য অথ স্টেট লিসেনার
-// অন্য পেজগুলো (admin/exam) তাদের নিজস্ব লিসেনার ব্যবহার করবে
 if (isLoginPage(window.location.pathname)) {
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            // ইউজার যদি লগইন অবস্থায় লগইন পেজে আসে, তাকে ড্যাশবোর্ডে পাঠাও
             const userDocRef = doc(db, "users", user.uid);
             try {
                 const userDocSnap = await getDoc(userDocRef);
@@ -32,20 +31,17 @@ if (isLoginPage(window.location.pathname)) {
                     if (userData.role === 'admin') {
                         redirectTo('admin.html');
                     } else {
-                        // ইউজার approved হোক বা না হোক, ড্যাশবোর্ডে পাঠাও
-                        // ড্যাশবোর্ড (index.html) হ্যান্ডেল করবে সে পরীক্ষা দিতে পারবে কি না
                         redirectTo('index.html');
                     }
                 }
             } catch (error) {
                 console.error("Auth check error:", error);
-                // এরর হলে কিছু করার দরকার নেই, লগইন পেজেই থাকুক
             }
         }
     });
 }
 
-// সাইন আপ
+// সাইন আপ ফাংশন
 async function signUp(email, password, username) {
   showSpinner();
   try {
@@ -61,7 +57,6 @@ async function signUp(email, password, username) {
     });
 
     showAlert("Sign up successful! Please wait for approval.", "success");
-    // রিডাইরেক্ট onAuthStateChanged করবে
     return user;
   } catch (error) {
     console.error("Sign up error:", error);
@@ -74,17 +69,12 @@ async function signUp(email, password, username) {
   }
 }
 
-// সাইন ইন
+// সাইন ইন ফাংশন
 async function signIn(email, password) {
   showSpinner();
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
-
-    // লগইন সফল, কিন্তু আমরা এখানে চেক করবো ইউজার approved কিনা
-    // approved না হলে আমরা তাকে আটকাবো না, বরং ড্যাশবোর্ডে পাঠাবো
-    // ড্যাশবোর্ড তাকে ব্লক করে মেসেজ দেখাবে। এতে UX ভালো হয়।
-    
     return user;
   } catch (error) {
     console.error("Sign in error:", error);
@@ -98,15 +88,12 @@ async function signIn(email, password) {
   }
 }
 
-// লগআউট
-// নোট: এটি রিডাইরেক্ট করবে না। যে পেজ থেকে কল হবে, সেই পেজের স্টেট চেঞ্জার রিডাইরেক্ট করবে।
+// লগআউট ফাংশন
 async function logout() {
   showSpinner();
   try {
     await signOut(auth);
     showAlert("Logged out successfully.", "info"); 
-    // কোনো redirectTo নেই এখানে। 
-    // admin.js বা exam.js এর onAuthStateChanged ডিটেক্ট করবে ইউজার নেই, তখন login.html এ পাঠাবে।
   } catch (error) {
     console.error("Logout error:", error);
     showAlert("Logout failed.", "danger");
@@ -115,12 +102,48 @@ async function logout() {
   }
 }
 
-// ইভেন্ট লিসেনার (শুধুমাত্র লগইন পেজের জন্য)
+// পাসওয়ার্ড রিসেট ফাংশন (নতুন)
+async function resetPassword(email) {
+    showSpinner();
+    try {
+        await sendPasswordResetEmail(auth, email);
+        
+        // ইনপুট মডালটি বন্ধ করা
+        const forgotModalEl = document.getElementById('forgotPasswordModal');
+        const forgotModal = bootstrap.Modal.getInstance(forgotModalEl);
+        if (forgotModal) forgotModal.hide();
+
+        // সাকসেস মডালটি ওপেন করা (যেখানে Spam ফোল্ডারের কথা বলা আছে)
+        const successModal = new bootstrap.Modal(document.getElementById('resetSuccessModal'));
+        successModal.show();
+
+    } catch (error) {
+        console.error("Reset Password Error:", error);
+        let msg = "Failed to send reset email.";
+        if (error.code === 'auth/user-not-found') msg = "No user found with this email.";
+        if (error.code === 'auth/invalid-email') msg = "Invalid email format.";
+        showAlert(msg, "danger");
+    } finally {
+        hideSpinner();
+    }
+}
+
+// ইভেন্ট লিসেনার
 document.addEventListener('DOMContentLoaded', () => {
     if (isLoginPage(window.location.pathname)) {
         const loginForm = document.getElementById('login-form');
         const signupForm = document.getElementById('signup-form');
         const loginTabBtn = document.getElementById('pills-login-tab');
+
+        // Forgot Password Form Listener (নতুন)
+        const resetForm = document.getElementById('reset-password-form');
+        if (resetForm) {
+            resetForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('reset-email').value;
+                await resetPassword(email);
+            });
+        }
 
         if (loginForm) {
             loginForm.addEventListener('submit', async (e) => {
@@ -147,4 +170,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-export { signUp, signIn, logout, auth, db };
+export { signUp, signIn, logout, resetPassword, auth, db };
