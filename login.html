@@ -15,7 +15,7 @@
                 <div class="card shadow-lg p-4">
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4">Sikkha48</h2>
-                        <div id="alert-container"></div> <!-- Alerts will be displayed here -->
+                        <div id="alert-container"></div> 
 
                         <!-- Loading Spinner -->
                         <div id="loading-spinner" class="loading-spinner">
@@ -44,6 +44,12 @@
                                         <label for="login-password" class="form-label">Password</label>
                                         <input type="password" class="form-control" id="login-password" name="login-password" required>
                                     </div>
+                                    
+                                    <!-- Forgot Password Link -->
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <a href="#" class="text-decoration-none small" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot Password?</a>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary w-100">Login</button>
                                 </form>
                             </div>
@@ -72,25 +78,52 @@
         </div>
     </div>
 
-    <!-- Custom Modal for Approval Pending -->
-    <div class="modal fade" id="approvalPendingModal" tabindex="-1" aria-labelledby="approvalPendingModalLabel" aria-hidden="true">
+    <!-- MODAL 1: Forgot Password Input -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="approvalPendingModalLabel">Account Not Approved Yet!</h5>
+                    <h5 class="modal-title">Reset Password</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>It looks like your account is still awaiting approval from the admin.</p>
-                    <p>Please contact **@Tnayem48** or try again later once your account has been activated.</p>
-                    <p class="text-muted small">
-                        "Great things take time, but they are worth the wait!"<br>
-                        "Your learning journey is about to begin, stay tuned!"
-                    </p>
+                    <p class="text-muted mb-3">Enter your registered email address. We will send you a link to reset your password.</p>
+                    <form id="reset-password-form">
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="reset-email" placeholder="name@example.com" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Send Reset Link</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="modal-logout-btn">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Spam Warning / Success Message -->
+    <div class="modal fade" id="resetSuccessModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-success">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Email Sent Successfully!</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <!-- Email Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#198754" class="bi bi-envelope-check-fill" viewBox="0 0 16 16">
+                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586l-1.239-.757ZM16 4.697v4.974A4.491 4.491 0 0 0 12.5 8a4.49 4.49 0 0 0-1.965.45l-.338-.207L16 4.697Z"/>
+                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"/>
+                        </svg>
+                    </div>
+                    <p class="lead">Check your inbox for the reset link.</p>
+                    <div class="alert alert-warning d-inline-block text-start" role="alert">
+                        <strong>গুরুত্বপূর্ণ:</strong> যদি Inbox-এ মেইল না পান, তবে দয়া করে আপনার <strong>Spam</strong> বা <strong>Junk</strong> ফোল্ডারটি চেক করুন।
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal">OK, Got it</button>
                 </div>
             </div>
         </div>
